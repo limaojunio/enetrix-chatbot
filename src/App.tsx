@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Footer from './components/layout/Footer'
 import Navbar from './components/layout/Navbar'
 import Home from './pages/Home/Home'
 import Chat from './pages/Chat/Chat'
@@ -29,6 +30,8 @@ function App() {
             />
           </Routes>
         </main>
+
+        <Footer />
       </div>
     </BrowserRouter>
   )
