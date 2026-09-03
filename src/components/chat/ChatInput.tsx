@@ -1,7 +1,7 @@
 function ChatInput() {
   return (
-    <div className="border-t border-slate-200 bg-white p-4">
-      <div className="flex items-center gap-3">
+    <div className="border-t border-slate-200 bg-white p-3 sm:p-4">
+      <div className="flex items-center gap-2 sm:gap-3">
         <input
           type="text"
           placeholder="Digite sua mensagem..."
@@ -10,7 +10,7 @@ function ChatInput() {
 
         <button
           type="button"
-          className="rounded-xl bg-blue-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-800"
+          className="rounded-xl bg-blue-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 sm:px-5"
         >
           Enviar
         </button>
