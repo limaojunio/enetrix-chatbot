@@ -5,29 +5,52 @@ import ChatMessage from "../../components/chat/ChatMessage"
 import ChatHistory from "../../components/chat/ChatHistory"
 import ChatMobileMenu from '../../components/chat/ChatMobileMenu'
 import ChatSuggestions from '../../components/chat/ChatSuggestions.tsx'
-import { useState } from "react"
+import { sendMessage } from '../../services/chatService'
+import { useState } from "react"    
 
-
-
+type Message = {
+  id: number
+  sender: 'user' | 'bot'
+  message: string
+}
 
 function Chat() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [message, setMessage] = useState('')
-    const [messages, setMessages] = useState<string[]>([])
+    const [messages, setMessages] = useState<Message[]>([])
 
-    function handleSendMessage() {
+    async function handleSendMessage() {
         const trimmedMessage = message.trim()
 
         if (trimmedMessage === '') {
             return
         }
 
+        const userMessage: Message = {
+            id: Date.now(),
+            sender: 'user',
+            message: trimmedMessage,
+        }
+
         setMessages((currentMessages) => [
             ...currentMessages,
-            trimmedMessage,
+            userMessage,
         ])
 
         setMessage('')
+
+        const response = await sendMessage(trimmedMessage)
+
+        const botMessage: Message = {
+            id: Date.now() + 1,
+            sender: 'bot',
+            message: response.response,
+        }
+
+        setMessages((currentMessages) => [
+            ...currentMessages,
+            botMessage,
+        ])
     }
 
     return (
@@ -49,14 +72,14 @@ function Chat() {
 
                         <ChatMessage sender="bot" message="Olá! Como posso ajudar você?"/>
 
-                        {messages.map((currentMessage, index) => (
+                        {messages.map((currentMessage) => (
                         <ChatMessage
-                            key={`${currentMessage}-${index}`}
-                            message={currentMessage}
-                            sender="user"
+                            key={currentMessage.id}
+                            message={currentMessage.message}
+                            sender={currentMessage.sender}
                         />
                         ))}
-                        
+
                     </div>
                 </div>
 
