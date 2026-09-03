@@ -1,31 +1,29 @@
-function ChatHistory() {
-  const conversations = [
-    'Plataforma Brasil',
-    'Acordos internacionais',
-    'Matriz energética',
-    'Plataforma Mundo',
-    'Sobre a ENETRIX',
-  ]
+import type { Conversation } from '../../types/chat'
 
+type ChatHistoryProps = {
+  conversations: Conversation[]
+}
+
+function ChatHistory({ conversations }: ChatHistoryProps) {
   return (
-    <aside className="hidden w-72 shrink-0 border-r border-slate-200 bg-white lg:block">
-      <div className="border-b border-slate-200 p-5">
-        <h2 className="text-sm font-semibold text-slate-900">
+    <aside className="hidden w-64 shrink-0 border-r border-slate-200 bg-white lg:block">
+      <div className="border-b border-slate-200 px-5 py-4">
+        <h2 className="text-sm font-semibold text-slate-800">
           Histórico de conversas
         </h2>
       </div>
-
-      <nav className="space-y-1 p-3">
+        
+      <div className="space-y-2 p-3">
         {conversations.map((conversation) => (
           <button
-            key={conversation}
+            key={conversation.id}
             type="button"
-            className="w-full rounded-lg px-3 py-2.5 text-left text-sm text-slate-600 transition hover:bg-slate-100"
+            className="w-full rounded-lg px-3 py-2 text-left text-sm text-slate-600 transition hover:bg-slate-50 hover:text-blue-700"
           >
-            {conversation}
+            {conversation.title}
           </button>
         ))}
-      </nav>
+      </div>
     </aside>
   )
 }

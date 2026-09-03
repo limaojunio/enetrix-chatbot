@@ -6,22 +6,37 @@ import ChatHistory from "../../components/chat/ChatHistory"
 import ChatMobileMenu from '../../components/chat/ChatMobileMenu'
 import ChatSuggestions from '../../components/chat/ChatSuggestions.tsx'
 import { sendMessage } from '../../services/chatService'
+import type { Conversation, Message } from '../../types/chat'
 import { useState } from "react"    
-
-type Message = {
-  id: number
-  sender: 'user' | 'bot'
-  message: string
-}
 
 function Chat() {
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+
     const [message, setMessage] = useState('')
+
     const [messages, setMessages] = useState<Message[]>([])
+
     const [isLoading, setIsLoading] = useState(false)
+
     const [error, setError] = useState<string | null>(null)
+
     const [lastFailedMessage, setLastFailedMessage] = useState<string | null>(null)
+
+    const firstMessage = messages[0]?.message
+
+    const conversationTitle =
+        firstMessage && firstMessage.length > 40
+            ? `${firstMessage.slice(0, 40)}...`
+            : firstMessage || 'Nova conversa'
+
+    const conversations: Conversation[] = [
+        {
+            id: 1,
+            title: conversationTitle,
+            messages,
+        },
+    ]
 
     async function handleSendMessage() {
         const trimmedMessage = message.trim()
@@ -107,7 +122,9 @@ function Chat() {
         <ChatMobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)}/>
 
         <div className="flex flex-1">
-            <ChatHistory />
+
+            <ChatHistory conversations={conversations} />
+
             <section className="flex min-w-0 flex-1 flex-col">
                 <div className="flex-1 overflow-y-auto px-4 py-5 sm:p-6">
                     <div className="mx-auto flex max-w-4xl flex-col gap-4">
