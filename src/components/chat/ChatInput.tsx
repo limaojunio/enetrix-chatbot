@@ -32,6 +32,7 @@ function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         value={message}
         onChange={(event) => onMessageChange(event.target.value)}
         disabled={disabled}
+        aria-label="Mensagem para o atendimento"
         placeholder="Digite sua mensagem..."
         className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
       />

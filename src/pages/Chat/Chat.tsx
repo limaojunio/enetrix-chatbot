@@ -164,7 +164,11 @@ function Chat() {
                         ))}
 
                         {isLoading && (
-                        <div className="flex justify-start">
+                        <div 
+                            className="flex justify-start"
+                            role="status"
+                            aria-live="polite"
+                        >
                             <div className="rounded-2xl rounded-bl-md bg-slate-100 px-4 py-3 text-sm text-slate-500">
                             Digitando...
                             </div>
