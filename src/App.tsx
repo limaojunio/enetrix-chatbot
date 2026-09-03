@@ -10,12 +10,12 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="flex min-h-screen flex-col">
+      <div className="flex h-screen flex-col overflow-hidden">
         <Navbar
           onMenuClick={() => setIsMenuOpen(true)}
         />
 
-        <main className="flex-1">
+        <main className="flex-1 overflow-hidden">
           <Routes>
             <Route path="/" element={<Home />} />
 

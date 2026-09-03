@@ -11,7 +11,7 @@ function Navbar({ onMenuClick }: NavbarProps) {
 
   return (
     <header className="border-b border-slate-200 bg-white">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="flex h-20 w-full items-center justify-between px-6 sm:px-8 lg:px-10">
 
         <div className="flex items-center gap-3">
           {isChatPage && (
@@ -27,7 +27,7 @@ function Navbar({ onMenuClick }: NavbarProps) {
 
           <Link
             to="/"
-            className="text-xl font-bold tracking-tight text-slate-900"
+            className="text-3xl font-bold tracking-tight text-blue-700"
           >
             ENETRIX
           </Link>
@@ -52,7 +52,7 @@ function Navbar({ onMenuClick }: NavbarProps) {
                 }`
               }
             >
-              Atendimento
+              Sobre a ENETRIX
             </NavLink>
           )}
         </nav>

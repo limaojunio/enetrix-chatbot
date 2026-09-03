@@ -2,10 +2,10 @@ import ChatInput from "../../components/chat/ChatInput"
 import ChatMessage from "../../components/chat/ChatMessage"
 import ChatHistory from "../../components/chat/ChatHistory"
 import ChatMobileMenu from '../../components/chat/ChatMobileMenu'
-import ChatSuggestions from '../../components/chat/ChatSuggestions.tsx'
+import ChatEmptyState from '../../components/chat/ChatEmptyState'
 import { sendMessage } from '../../services/chatService'
 import type { Conversation, Message } from '../../types/chat'
-import { useEffect, useState } from 'react'    
+import { useEffect, useState } from 'react'  
 
 type ChatProps = {
   isMenuOpen: boolean
@@ -60,6 +60,15 @@ function Chat({
             JSON.stringify(messages),
         )
     }, [messages])
+
+        function handleClearHistory() {
+        localStorage.removeItem(STORAGE_KEY)
+
+        setMessages([])
+        setMessage('')
+        setError(null)
+        setLastFailedMessage(null)
+    }
 
     async function handleSendMessage() {
         const trimmedMessage = message.trim()
@@ -139,7 +148,7 @@ function Chat({
     }
 
     return (
-    <main className="flex min-h-screen flex-col bg-slate-50">
+    <main className="flex h-full min-h-0 flex-col bg-slate-50">
 
         <ChatMobileMenu
         isOpen={isMenuOpen}
@@ -147,62 +156,57 @@ function Chat({
         conversations={conversations}
         />
 
-        <div className="flex flex-1">
+        <div className="flex flex-1 min-h-0">
 
-            <ChatHistory conversations={conversations} />
+            <ChatHistory conversations={conversations} onClearHistory={handleClearHistory}/>
 
-            <section className="flex min-w-0 flex-1 flex-col">
-                <div className="flex-1 overflow-y-auto px-4 py-5 sm:p-6">
-                    <div className="mx-auto flex max-w-4xl flex-col gap-4">
-                        <div>
-                            <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">
-                            Atendimento ENETRIX
-                            </h2>
-                        </div>
-
-                        <ChatMessage sender="bot" message="Olá! Como posso ajudar você?"/>
-
-                        {messages.map((currentMessage) => (
-                        <ChatMessage
-                            key={currentMessage.id}
-                            message={currentMessage.message}
-                            sender={currentMessage.sender}
+            <section className="relative flex min-w-0 flex-1 flex-col min-h-0">
+                <div className="flex-1 overflow-y-auto px-4 py-5 pb-32 sm:p-6 sm:pb-36">
+                    {messages.length === 0 ? (
+                        <ChatEmptyState
+                            onSuggestionClick={setMessage}
                         />
-                        ))}
+                    ) : (
+                        <div className="mx-auto flex max-w-4xl flex-col gap-4">
+                            {messages.map((currentMessage) => (
+                                <ChatMessage
+                                    key={currentMessage.id}
+                                    message={currentMessage.message}
+                                    sender={currentMessage.sender}
+                                />
+                            ))}
 
-                        {isLoading && (
-                        <div 
-                            className="flex justify-start"
-                            role="status"
-                            aria-live="polite"
-                        >
-                            <div className="rounded-2xl rounded-bl-md bg-slate-100 px-4 py-3 text-sm text-slate-500">
-                            Digitando...
-                            </div>
+                            {isLoading && (
+                                <div
+                                    className="flex justify-start"
+                                    role="status"
+                                    aria-live="polite"
+                                >
+                                    <div className="rounded-2xl rounded-bl-md bg-slate-100 px-4 py-3 text-sm text-slate-500">
+                                        Digitando...
+                                    </div>
+                                </div>
+                            )}
+
+                            {error && (
+                                <div className="flex justify-start">
+                                    <div className="rounded-2xl rounded-bl-md bg-red-50 px-4 py-3 text-sm text-red-600">
+                                        <p>{error}</p>
+
+                                        <button
+                                            type="button"
+                                            onClick={handleRetry}
+                                            disabled={isLoading}
+                                            className="mt-2 font-semibold underline transition hover:text-red-800 disabled:cursor-not-allowed disabled:opacity-50"
+                                        >
+                                            Tentar novamente
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                        )}
-
-                        {error && (
-                        <div className="flex justify-start">
-                            <div className="rounded-2xl rounded-bl-md bg-red-50 px-4 py-3 text-sm text-red-600">
-                            <p>{error}</p>
-
-                            <button
-                                type="button"
-                                onClick={handleRetry}
-                                disabled={isLoading}
-                                className="mt-2 font-semibold underline transition hover:text-red-800 disabled:cursor-not-allowed disabled:opacity-50"
-                            >
-                                Tentar novamente
-                            </button>
-                            </div>
-                        </div>
-                        )}
-
-                    </div>
+                    )}
                 </div>
-
-                {message === '' && (<ChatSuggestions onSuggestionClick={setMessage} />)}
 
                 <ChatInput
                 message={message}
