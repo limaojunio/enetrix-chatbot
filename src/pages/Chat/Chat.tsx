@@ -154,6 +154,7 @@ function Chat({
         isOpen={isMenuOpen}
         onClose={onCloseMenu}
         conversations={conversations}
+        onClearHistory={handleClearHistory}
         />
 
         <div className="flex flex-1 min-h-0">

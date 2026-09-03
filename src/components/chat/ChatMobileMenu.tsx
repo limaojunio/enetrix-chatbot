@@ -1,16 +1,19 @@
 import { Link } from 'react-router-dom'
 import type { Conversation } from '../../types/chat'
+import { Trash2 } from 'lucide-react'
 
 type ChatMobileMenuProps = {
   isOpen: boolean
   onClose: () => void
   conversations: Conversation[]
+  onClearHistory: () => void
 }
 
 function ChatMobileMenu({
   isOpen,
   onClose,
   conversations,
+  onClearHistory,
 }: ChatMobileMenuProps) {
   if (!isOpen) {
     return null
@@ -27,7 +30,7 @@ function ChatMobileMenu({
       />
 
       {/* Drawer */}
-      <aside className="relative h-full w-2/3 max-w-xs bg-white shadow-xl">
+      <aside className="relative flex h-full w-2/3 max-w-xs flex-col bg-white shadow-xl">
         <div className="flex h-16 items-center justify-between border-b border-slate-200 px-4">
           <span className="text-lg font-bold text-slate-900">
             ENETRIX
@@ -43,7 +46,7 @@ function ChatMobileMenu({
           </button>
         </div>
 
-        <nav className="p-4">
+        <nav className="flex-1 overflow-y-auto p-4">
           <Link
             to="/"
             onClick={onClose}
@@ -70,6 +73,17 @@ function ChatMobileMenu({
             </div>
           </div>
         </nav>
+
+        <div className="border-t border-slate-200 p-4">
+          <button
+            type="button"
+            onClick={onClearHistory}
+            className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left text-slate-600 transition hover:bg-slate-50"
+          >
+            <Trash2 size={20} />
+            <span>Limpar histórico</span>
+          </button>
+        </div>
       </aside>
     </div>
   )
