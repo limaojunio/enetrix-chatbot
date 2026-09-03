@@ -15,9 +15,11 @@ type Message = {
 }
 
 function Chat() {
+
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState<Message[]>([])
+    const [isLoading, setIsLoading] = useState(false)
 
     async function handleSendMessage() {
         const trimmedMessage = message.trim()
@@ -38,6 +40,7 @@ function Chat() {
         ])
 
         setMessage('')
+        setIsLoading(true)
 
         const response = await sendMessage(trimmedMessage)
 
@@ -51,6 +54,8 @@ function Chat() {
             ...currentMessages,
             botMessage,
         ])
+
+        setIsLoading(false)
     }
 
     return (
@@ -80,6 +85,14 @@ function Chat() {
                         />
                         ))}
 
+                        {isLoading && (
+                        <div className="flex justify-start">
+                            <div className="rounded-2xl rounded-bl-md bg-slate-100 px-4 py-3 text-sm text-slate-500">
+                            Digitando...
+                            </div>
+                        </div>
+                        )}
+
                     </div>
                 </div>
 
@@ -89,6 +102,7 @@ function Chat() {
                 message={message}
                 onMessageChange={setMessage}
                 onSendMessage={handleSendMessage}
+                disabled={isLoading}
                 />
 
             </section>
