@@ -119,7 +119,7 @@ function Chat() {
     <main className="flex min-h-screen flex-col bg-slate-50">
         <ChatHeader onMenuClick={() => setIsMenuOpen(true)}/>
 
-        <ChatMobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)}/>
+        <ChatMobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} conversations={conversations} />
 
         <div className="flex flex-1">
 

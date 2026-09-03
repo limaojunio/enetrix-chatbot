@@ -1,13 +1,16 @@
 import { Link } from 'react-router-dom'
+import type { Conversation } from '../../types/chat'
 
 type ChatMobileMenuProps = {
   isOpen: boolean
   onClose: () => void
+  conversations: Conversation[]
 }
 
 function ChatMobileMenu({
   isOpen,
   onClose,
+  conversations,
 }: ChatMobileMenuProps) {
   if (!isOpen) {
     return null
@@ -53,42 +56,17 @@ function ChatMobileMenu({
             <h2 className="px-4 text-xs font-semibold uppercase tracking-wide text-slate-400">
               Histórico
             </h2>
-
             <div className="mt-2 space-y-1">
-              <button
-                type="button"
-                className="w-full rounded-lg px-4 py-3 text-left text-sm text-slate-600 transition hover:bg-slate-100"
-              >
-                Plataforma Brasil
-              </button>
-
-              <button
-                type="button"
-                className="w-full rounded-lg px-4 py-3 text-left text-sm text-slate-600 transition hover:bg-slate-100"
-              >
-                Acordos internacionais
-              </button>
-
-              <button
-                type="button"
-                className="w-full rounded-lg px-4 py-3 text-left text-sm text-slate-600 transition hover:bg-slate-100"
-              >
-                Matriz energética
-              </button>
-
-              <button
-                type="button"
-                className="w-full rounded-lg px-4 py-3 text-left text-sm text-slate-600 transition hover:bg-slate-100"
-              >
-                Plataforma Mundo
-              </button>
-
-              <button
-                type="button"
-                className="w-full rounded-lg px-4 py-3 text-left text-sm text-slate-600 transition hover:bg-slate-100"
-              >
-                Sobre a ENETRIX
-              </button>
+                {conversations.map((conversation) => (
+                    <button
+                    key={conversation.id}
+                    type="button"
+                    onClick={onClose}
+                    className="w-full rounded-lg px-4 py-3 text-left text-sm text-slate-600 transition hover:bg-slate-100"
+                    >
+                    {conversation.title}
+                    </button>
+                ))}
             </div>
           </div>
         </nav>
