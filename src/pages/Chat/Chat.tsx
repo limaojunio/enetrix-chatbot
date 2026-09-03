@@ -7,15 +7,27 @@ import ChatMobileMenu from '../../components/chat/ChatMobileMenu'
 import ChatSuggestions from '../../components/chat/ChatSuggestions.tsx'
 import { sendMessage } from '../../services/chatService'
 import type { Conversation, Message } from '../../types/chat'
-import { useState } from "react"    
+import { useEffect, useState } from 'react'    
 
 function Chat() {
+
+    const STORAGE_KEY = 'enetrix-chat-messages'
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     const [message, setMessage] = useState('')
 
-    const [messages, setMessages] = useState<Message[]>([])
+    const [messages, setMessages] = useState<Message[]>(() => {
+
+        const savedMessages = localStorage.getItem(STORAGE_KEY)
+
+        if (!savedMessages) {
+            return []
+        }
+
+        return JSON.parse(savedMessages)
+
+    })
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -37,6 +49,13 @@ function Chat() {
             messages,
         },
     ]
+
+    useEffect(() => {
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(messages),
+        )
+    }, [messages])
 
     async function handleSendMessage() {
         const trimmedMessage = message.trim()
