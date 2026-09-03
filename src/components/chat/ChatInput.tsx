@@ -1,37 +1,45 @@
-import type { ChangeEvent } from 'react'
-
 type ChatInputProps = {
   message: string
   onMessageChange: (message: string) => void
+  onSendMessage: () => void
 }
 
 function ChatInput({
   message,
   onMessageChange,
+  onSendMessage,
 }: ChatInputProps) {
-  function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    onMessageChange(event.target.value)
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    if (message.trim() === '') {
+      return
+    }
+
+    onSendMessage()
   }
 
   return (
-    <div className="border-t border-slate-200 bg-white p-3 sm:p-4">
-      <div className="flex items-center gap-2 sm:gap-3">
-        <input
-          type="text"
-          value={message}
-          onChange={handleChange}
-          placeholder="Digite sua mensagem..."
-          className="flex-1 rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-        />
+    <form
+      onSubmit={handleSubmit}
+      className="flex items-center gap-2"
+    >
+      <input
+        type="text"
+        value={message}
+        onChange={(event) => onMessageChange(event.target.value)}
+        placeholder="Digite sua mensagem..."
+        className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+      />
 
-        <button
-          type="button"
-          className="rounded-xl bg-blue-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 sm:px-5"
-        >
-          Enviar
-        </button>
-      </div>
-    </div>
+      <button
+        type="submit"
+        disabled={message.trim() === ''}
+        className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        Enviar
+      </button>
+    </form>
   )
 }
 

@@ -13,6 +13,22 @@ import { useState } from "react"
 function Chat() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [message, setMessage] = useState('')
+    const [messages, setMessages] = useState<string[]>([])
+
+    function handleSendMessage() {
+        const trimmedMessage = message.trim()
+
+        if (trimmedMessage === '') {
+            return
+        }
+
+        setMessages((currentMessages) => [
+            ...currentMessages,
+            trimmedMessage,
+        ])
+
+        setMessage('')
+    }
 
     return (
     <main className="flex min-h-screen flex-col bg-slate-50">
@@ -29,18 +45,28 @@ function Chat() {
                             <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">
                             Atendimento ENETRIX
                             </h2>
-
-                            <p className="mt-1 text-sm text-slate-500">
-                            Olá! Como posso ajudar você?
-                            </p>
                         </div>
 
                         <ChatMessage sender="bot" message="Olá! Como posso ajudar você?"/>
+
+                        {messages.map((currentMessage, index) => (
+                        <ChatMessage
+                            key={`${currentMessage}-${index}`}
+                            message={currentMessage}
+                            sender="user"
+                        />
+                        ))}
+                        
                     </div>
                 </div>
 
                 {message === '' && (<ChatSuggestions onSuggestionClick={setMessage} />)}
-                <ChatInput message={message} onMessageChange={setMessage}/>
+
+                <ChatInput
+                message={message}
+                onMessageChange={setMessage}
+                onSendMessage={handleSendMessage}
+                />
 
             </section>
         </div>
