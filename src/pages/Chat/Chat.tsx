@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom"
-import ChatHeader from "../../components/chat/ChatHeader"
 import ChatInput from "../../components/chat/ChatInput"
 import ChatMessage from "../../components/chat/ChatMessage"
 import ChatHistory from "../../components/chat/ChatHistory"
@@ -9,11 +7,17 @@ import { sendMessage } from '../../services/chatService'
 import type { Conversation, Message } from '../../types/chat'
 import { useEffect, useState } from 'react'    
 
-function Chat() {
+type ChatProps = {
+  isMenuOpen: boolean
+  onCloseMenu: () => void
+}
+
+function Chat({
+    isMenuOpen,
+    onCloseMenu,
+    }: ChatProps) {
 
     const STORAGE_KEY = 'enetrix-chat-messages'
-
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     const [message, setMessage] = useState('')
 
@@ -136,9 +140,12 @@ function Chat() {
 
     return (
     <main className="flex min-h-screen flex-col bg-slate-50">
-        <ChatHeader onMenuClick={() => setIsMenuOpen(true)}/>
 
-        <ChatMobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} conversations={conversations} />
+        <ChatMobileMenu
+        isOpen={isMenuOpen}
+        onClose={onCloseMenu}
+        conversations={conversations}
+        />
 
         <div className="flex flex-1">
 
@@ -205,12 +212,6 @@ function Chat() {
                 />
 
             </section>
-        </div>
-
-        <div className="hidden border-t border-slate-200 bg-white px-6 py-3 text-center lg:block">
-            <Link to="/" className="text-xs font-medium text-blue-700 hover:text-blue-800">
-                Voltar para Home
-            </Link>
         </div>
     </main>
   )

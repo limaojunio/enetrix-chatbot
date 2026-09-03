@@ -5,15 +5,6 @@ function Home() {
       <section className="mx-auto flex min-h-screen max-w-7xl flex-col px-5 py-6 sm:px-8 sm:py-8 lg:px-10">
 
         {/* Header */}
-        <header className="flex items-center justify-between">
-          <div className="text-xl font-bold tracking-tight text-blue-900 sm:text-2xl">
-            ENETRIX
-          </div>
-
-          <Link to="/" className="text-xs font-medium text-slate-700 transition hover:text-blue-700 sm:text-sm">
-            Sobre a ENETRIX
-          </Link>
-        </header>
 
         {/* Conteúdo principal */}
         <div className="flex flex-1 flex-col items-center justify-center py-12 text-center sm:py-16">
