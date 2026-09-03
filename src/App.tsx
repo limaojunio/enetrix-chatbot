@@ -1,14 +1,16 @@
-import './App.css'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Home from './pages/Home/Home'
+import Chat from './pages/Chat/Chat'
 
 function App() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-50">
-      <h1 className="text-4xl font-bold text-blue-700">
-        ENETRIX
-      </h1>
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/chat" element={<Chat />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
 export default App
-
