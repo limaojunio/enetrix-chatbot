@@ -20,6 +20,8 @@ function Chat() {
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState<Message[]>([])
     const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const [lastFailedMessage, setLastFailedMessage] = useState<string | null>(null)
 
     async function handleSendMessage() {
         const trimmedMessage = message.trim()
@@ -40,22 +42,62 @@ function Chat() {
         ])
 
         setMessage('')
+        setError(null)
+        setLastFailedMessage(null)
         setIsLoading(true)
 
-        const response = await sendMessage(trimmedMessage)
+        try {
+            const response = await sendMessage(trimmedMessage)
 
-        const botMessage: Message = {
+            const botMessage: Message = {
             id: Date.now() + 1,
             sender: 'bot',
             message: response.response,
-        }
+            }
 
-        setMessages((currentMessages) => [
+            setMessages((currentMessages) => [
             ...currentMessages,
             botMessage,
-        ])
+            ])
+        } catch {
+            setError(
+            'Não foi possível obter uma resposta. Tente novamente.',
+            )
+            setLastFailedMessage(trimmedMessage)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+    async function handleRetry() {
+        if (!lastFailedMessage) {
+            return
+        }
 
-        setIsLoading(false)
+        setError(null)
+        setIsLoading(true)
+
+        try {
+            const response = await sendMessage(lastFailedMessage)
+
+            const botMessage: Message = {
+            id: Date.now(),
+            sender: 'bot',
+            message: response.response,
+            }
+
+            setMessages((currentMessages) => [
+            ...currentMessages,
+            botMessage,
+            ])
+
+            setLastFailedMessage(null)
+        } catch {
+            setError(
+            'Não foi possível obter uma resposta. Tente novamente.',
+            )
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -89,6 +131,23 @@ function Chat() {
                         <div className="flex justify-start">
                             <div className="rounded-2xl rounded-bl-md bg-slate-100 px-4 py-3 text-sm text-slate-500">
                             Digitando...
+                            </div>
+                        </div>
+                        )}
+
+                        {error && (
+                        <div className="flex justify-start">
+                            <div className="rounded-2xl rounded-bl-md bg-red-50 px-4 py-3 text-sm text-red-600">
+                            <p>{error}</p>
+
+                            <button
+                                type="button"
+                                onClick={handleRetry}
+                                disabled={isLoading}
+                                className="mt-2 font-semibold underline transition hover:text-red-800 disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                                Tentar novamente
+                            </button>
                             </div>
                         </div>
                         )}

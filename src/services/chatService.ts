@@ -10,6 +10,10 @@ export async function sendMessage(
     setTimeout(resolve, 1000)
   })
 
+  if (message.toLowerCase() === 'teste erro') {
+    throw new Error('Falha simulada na comunicação com o chatbot.')
+  }
+
   return {
     response: `Recebi sua mensagem: "${message}"`,
     timestamp: new Date().toISOString(),
