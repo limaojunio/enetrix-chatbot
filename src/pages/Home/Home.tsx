@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 function Home() {
   return (
     <main className="min-h-screen bg-white">
@@ -9,9 +10,9 @@ function Home() {
             ENETRIX
           </div>
 
-          <button className="text-xs font-medium text-slate-700 transition hover:text-blue-700 sm:text-sm">
+          <Link to="/" className="text-xs font-medium text-slate-700 transition hover:text-blue-700 sm:text-sm">
             Sobre a ENETRIX
-          </button>
+          </Link>
         </header>
 
         {/* Conteúdo principal */}
@@ -70,9 +71,9 @@ function Home() {
           </div>
 
           {/* CTA */}
-          <button className="mt-8 rounded-xl bg-blue-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-700/20 transition hover:bg-blue-800 sm:mt-10 sm:px-7 sm:py-3.5">
+          <Link to="/chat" className="mt-8 rounded-xl bg-blue-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-700/20 transition hover:bg-blue-800 sm:mt-10 sm:px-7 sm:py-3.5">
             Iniciar atendimento →
-          </button>
+          </Link>
 
         </div>
       </section>
